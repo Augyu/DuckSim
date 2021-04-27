@@ -2,7 +2,7 @@ package ducksim
 
 import java.awt.Color
 
-abstract class Duck {
+abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()) {
 
     // values that can be overridden
 
@@ -17,7 +17,8 @@ abstract class Duck {
         private set
     var isOnDSWC = false
         private set
-
+    var flyBehavior: FlyBehavior = defaultFlyBehavior
+        private set
     // function for setting the state back to its default (swimming)
 
     fun swim() {
@@ -27,34 +28,36 @@ abstract class Duck {
     // functions from the context menu
 
     open fun fly() {
-        state = State.FLYING
+        state = flyBehavior.state
     }
 
     open fun quack() {
         state = State.QUACKING
     }
 
-    val joinDSCW = object: DuckMenuItem {
+    val joinDSCW = object : DuckMenuItem {
         override fun invoke() {
             isOnDSWC = true
         }
     }
 
-    val quitDSCW = object: DuckMenuItem {
+    val quitDSCW = object : DuckMenuItem {
         override fun invoke() {
             isOnDSWC = false
         }
     }
 
-    val capture = object: DuckMenuItem {
+    val capture = object : DuckMenuItem {
         override fun invoke() {
             isFree = false
+            flyBehavior = FlyNoWay()
         }
     }
 
-    val release = object: DuckMenuItem {
+    val release = object : DuckMenuItem {
         override fun invoke() {
             isFree = true
+            flyBehavior = defaultFlyBehavior
         }
     }
 
