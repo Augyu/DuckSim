@@ -102,7 +102,7 @@ class DuckSimView(private val duckPond: DuckPond) : JPanel() {
         fillRect(g, rect)
         g.color = Color.GRAY
         fillRect(g, reduceRect(rect, 10))
-        g.color = if (duckPond.selectedDucks.contains(duck)) Color.BLACK else Color.WHITE
+        g.color = if (duckPond.selectedDucks.contains(duck)) duck.color else Color.WHITE
         fillRect(g, reduceRect(rect, 20))
 
         // Paint the text in the square.

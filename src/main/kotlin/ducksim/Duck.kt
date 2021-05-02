@@ -2,12 +2,13 @@ package ducksim
 
 import java.awt.Color
 
-abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()) {
+abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings(),
+    private val defaultQuackBehavior: QuackBehavior = QuackNormal()) {
 
     // values that can be overridden
 
     open val color: Color = Color.BLACK
-    open val quackText: String = "Quack!"
+    open var quackText: String = defaultQuackBehavior.getQuack()
 
     // variables that can be changed only by functions in this class
 
@@ -19,6 +20,7 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
         private set
     var flyBehavior: FlyBehavior = defaultFlyBehavior
         private set
+    var quackBehavior: QuackBehavior = defaultQuackBehavior
     // function for setting the state back to its default (swimming)
 
     fun swim() {
@@ -32,7 +34,7 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
     }
 
     open fun quack() {
-        state = State.QUACKING
+        state = if (isFree) State.QUACKING else State.SWIMMING
     }
 
     val joinDSCW = object : DuckMenuItem {
@@ -51,6 +53,8 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
         override fun invoke() {
             isFree = false
             flyBehavior = FlyNoWay()
+            quackBehavior = QuackNoWay()
+            quackText = quackBehavior.getQuack()
         }
     }
 
@@ -58,6 +62,8 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
         override fun invoke() {
             isFree = true
             flyBehavior = defaultFlyBehavior
+            quackBehavior = defaultQuackBehavior
+            quackText = quackBehavior.getQuack()
         }
     }
 
