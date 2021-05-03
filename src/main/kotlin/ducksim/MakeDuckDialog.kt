@@ -74,12 +74,11 @@ class MakeDuckDialog(
         buttonPanel.add(cancelButton)
         okayButton.addActionListener {
             // makeDuckDialog
-//            print(blingCount)
             val duck: Duck? = when (duckType) {
-                "Mallard" -> MallardDuck()
-                "Redhead" -> RedheadDuck()
-                "Rubber" -> RubberDuck()
-                "Decoy" -> DecoyDuck()
+                "Mallard" -> createDuck(MallardDuck())
+                "Redhead" -> createDuck(RedheadDuck())
+                "Rubber" -> createDuck(RubberDuck())
+                "Decoy" -> createDuck(DecoyDuck())
                 else -> null
             }
             if (duck != null) {
@@ -122,4 +121,11 @@ class MakeDuckDialog(
     }
 
     private fun reachMaxBling(): Boolean = blingCount.map { it.value }.sum() == 3
+
+    private fun createDuck(duckArg: Duck): Duck = DuckFactory.createDuck(
+        duckArg,
+        blingCount[Decoration.STAR]!!,
+        blingCount[Decoration.CROSS]!!,
+        blingCount[Decoration.MOON]!!
+    )
 }
