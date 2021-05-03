@@ -3,7 +3,7 @@ package ducksim
 import java.awt.Color
 
 abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings(),
-    private val defaultQuackBehavior: QuackBehavior = QuackNormal()) {
+    private val defaultQuackBehavior: QuackBehavior = QuackNormal(null)) {
 
     // values that can be overridden
 

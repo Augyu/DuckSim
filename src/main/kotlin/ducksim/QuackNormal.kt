@@ -1,9 +1,9 @@
 package ducksim
 
-class QuackNormal: QuackBehavior {
+class QuackNormal(var sound: String?): QuackBehavior {
 
     override fun getQuack(): String {
-        return "Quack!"
+        return sound ?: "Quack!"
     }
 
 }

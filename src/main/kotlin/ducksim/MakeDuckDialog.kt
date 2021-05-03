@@ -31,7 +31,7 @@ class MakeDuckDialog(
     // Duck panel
     private val duckPanel = JPanel()
     private val duckLabel = JLabel("Duck")
-    private val duckStrings = listOf("Mallard", "Redhead", "Rubber", "Decoy")
+    private val duckStrings = listOf("Mallard", "Redhead", "Rubber", "Decoy", "Goose")
     private val duckOptions: JComboBox<*> = JComboBox<Any?>(duckStrings.toTypedArray())
 
     // Stored Data
@@ -79,6 +79,7 @@ class MakeDuckDialog(
                 "Redhead" -> createDuck(RedheadDuck())
                 "Rubber" -> createDuck(RubberDuck())
                 "Decoy" -> createDuck(DecoyDuck())
+                "Goose" -> createDuck(GooseDuck())
                 else -> null
             }
             if (duck != null) {
