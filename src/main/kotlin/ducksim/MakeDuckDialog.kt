@@ -8,7 +8,7 @@ import javax.swing.*
 class MakeDuckDialog(
     private val model: DuckPond,
     private val view: DuckSimView
-    ) : JDialog() {
+) : JDialog() {
 
     enum class Decoration {
         STAR,
@@ -19,7 +19,8 @@ class MakeDuckDialog(
     private val blingCount = mutableMapOf(
         Decoration.STAR to 0,
         Decoration.CROSS to 0,
-        Decoration.MOON to 0)
+        Decoration.MOON to 0
+    )
 
     private val blingCountLabel = mapOf(
         Decoration.STAR to JLabel("0"),
@@ -73,6 +74,7 @@ class MakeDuckDialog(
         buttonPanel.add(cancelButton)
         okayButton.addActionListener {
             // makeDuckDialog
+//            print(blingCount)
             val duck: Duck? = when (duckType) {
                 "Mallard" -> MallardDuck()
                 "Redhead" -> RedheadDuck()
@@ -101,7 +103,7 @@ class MakeDuckDialog(
         val incrementButton = JButton("+")
         incrementButton.addActionListener {
             val count = blingCount[decoration] ?: 0
-            blingCount[decoration] = count + 1
+            blingCount[decoration] = if (!reachMaxBling()) count + 1 else count
             // refresh view
             blingCountLabel[decoration]!!.text = blingCount[decoration].toString()
             blingCountLabel[decoration]!!.repaint()
@@ -111,11 +113,13 @@ class MakeDuckDialog(
         val decrementButton = JButton("-")
         decrementButton.addActionListener {
             val count = blingCount[decoration] ?: 0
-            blingCount[decoration] = count - 1
+            blingCount[decoration] = if (count - 1 == -1) 0 else count - 1
             // refresh view
             blingCountLabel[decoration]!!.text = blingCount[decoration].toString()
             blingCountLabel[decoration]!!.repaint()
         }
         blingPanel.add(decrementButton)
     }
+
+    private fun reachMaxBling(): Boolean = blingCount.map { it.value }.sum() == 3
 }
