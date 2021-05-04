@@ -20,8 +20,8 @@ abstract class Duck(
         private set
     var isOnDSWC = false
         private set
-    var flyBehavior: FlyBehavior = defaultFlyBehavior
-        private set
+    open var flyBehavior: FlyBehavior = defaultFlyBehavior
+
     var quackBehavior: QuackBehavior = defaultQuackBehavior
 
     // function for setting the state back to its default (swimming)
@@ -38,7 +38,7 @@ abstract class Duck(
     }
 
     open fun quack() {
-        state = if (isFree) State.QUACKING else State.SWIMMING
+        state = if (isFree && quackBehavior !is QuackNoWay) State.QUACKING else State.SWIMMING
     }
 
     fun welcome() {
@@ -46,36 +46,52 @@ abstract class Duck(
         welcomeText = if (isFree) "Welcome" else "Beware!"
     }
 
-    val joinDSCW = object : DuckMenuItem {
+    open val joinDSCW = object : DuckMenuItem {
         override fun invoke() {
-            isOnDSWC = true
-            DuckFactory.registerObserver(this@Duck)
+            doJoinDSCW()
         }
     }
 
-    val quitDSCW = object : DuckMenuItem {
+    fun doJoinDSCW() {
+        isOnDSWC = true
+        DuckFactory.registerObserver(this@Duck)
+    }
+
+    open val quitDSCW = object : DuckMenuItem {
         override fun invoke() {
-            isOnDSWC = false
-            DuckFactory.removeObserver(this@Duck)
+            doQuitDSWC()
         }
     }
 
-    val capture = object : DuckMenuItem {
+    fun doQuitDSWC() {
+        isOnDSWC = false
+        DuckFactory.removeObserver(this@Duck)
+    }
+
+    open val capture = object : DuckMenuItem {
         override fun invoke() {
-            isFree = false
-            flyBehavior = FlyNoWay()
-            quackBehavior = QuackNoWay()
-            quackText = quackBehavior.getQuack()
+            doCapture()
         }
     }
 
-    val release = object : DuckMenuItem {
+    fun doCapture() {
+        isFree = false
+        flyBehavior = FlyNoWay()
+        quackBehavior = QuackNoWay()
+        quackText = quackBehavior.getQuack()
+    }
+
+    open val release = object : DuckMenuItem {
         override fun invoke() {
-            isFree = true
-            flyBehavior = defaultFlyBehavior
-            quackBehavior = defaultQuackBehavior
-            quackText = quackBehavior.getQuack()
+            doRelease()
         }
+    }
+
+    fun doRelease() {
+        isFree = true
+        flyBehavior = defaultFlyBehavior
+        quackBehavior = defaultQuackBehavior
+        quackText = quackBehavior.getQuack()
     }
 
     // abstract display function that must be implemented by concrete classes

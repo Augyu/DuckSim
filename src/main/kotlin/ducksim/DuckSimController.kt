@@ -143,9 +143,7 @@ class DuckSimController(val view: DuckSimView, val duckPond: DuckPond) : MouseLi
         if (SwingUtilities.isLeftMouseButton(e)) {
             when {
                 view.newDuckButtonRectangle.contains(e.x, e.y) -> {
-                    val makeDuckDialog = MakeDuckDialog(duckPond, view)
-                    makeDuckDialog.setSize(300, 200)
-                    makeDuckDialog.isVisible = true
+                    NewDuckController(duckPond, view).createNewDuck()
                 }
                 aDuckWasClicked(e) -> {
                     duckPond.toggleSelection(clickedDuck(e))

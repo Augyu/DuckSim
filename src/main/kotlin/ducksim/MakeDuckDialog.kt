@@ -127,7 +127,7 @@ class MakeDuckDialog(
     private fun createDuck(duckArg: Duck): Duck = DuckFactory.createDuck(
         duckArg,
         blingCount[Decoration.STAR]!!,
-        blingCount[Decoration.CROSS]!!,
-        blingCount[Decoration.MOON]!!
+        blingCount[Decoration.MOON]!!,
+        blingCount[Decoration.CROSS]!!
     )
 }

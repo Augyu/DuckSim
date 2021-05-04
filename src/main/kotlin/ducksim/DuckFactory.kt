@@ -2,18 +2,18 @@ package ducksim
 
 object DuckFactory : Subject {
 
-    val observers = mutableListOf<Observer>()
+    private val observers = mutableListOf<Observer>()
 
     fun createDuck(baseDuck: Duck, starCount: Int, moonCount: Int, crossCount: Int): Duck {
         var resultDuck: Duck = baseDuck
         repeat(starCount) {
-            resultDuck = StarBling(resultDuck)
+            resultDuck = StarBling(resultDuck, baseDuck.flyBehavior, baseDuck.quackBehavior)
         }
         repeat(moonCount) {
-            resultDuck = MoonBling(resultDuck)
+            resultDuck = MoonBling(resultDuck, baseDuck.flyBehavior, baseDuck.quackBehavior)
         }
         repeat(crossCount) {
-            resultDuck = CrossBling(resultDuck)
+            resultDuck = CrossBling(resultDuck, baseDuck.flyBehavior, baseDuck.quackBehavior)
         }
         return resultDuck
     }
