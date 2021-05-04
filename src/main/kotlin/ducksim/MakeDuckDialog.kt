@@ -84,6 +84,7 @@ class MakeDuckDialog(
             }
             if (duck != null) {
                 model.addNewDuck(duck)
+                DuckFactory.notifyObservers()
             }
             view.repaint()
             dispose()

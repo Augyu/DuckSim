@@ -114,7 +114,7 @@ class DuckSimView(private val duckPond: DuckPond) : JPanel() {
 
         // Print optional welcome/warning message
         if (duck.isOnDSWC && duck.state === State.WELCOMING) {
-            drawCenteredTextInRectangle(g, text = "Welcome!", rectangle = rect, yOffset = 35)
+            drawCenteredTextInRectangle(g, text = duck.welcomeText, rectangle = rect, yOffset = 35)
             duck.swim()
         }
 
@@ -128,6 +128,10 @@ class DuckSimView(private val duckPond: DuckPond) : JPanel() {
         // If the duck is captured, put a red X in the lower right corner of the square.
         if (!duck.isFree) {
             drawCenteredTextInRectangle(g, color = Color.RED, text = "X", rectangle = rect, xOffset = 30, yOffset = 85)
+        }
+
+        if (duck.isOnDSWC) {
+            drawCenteredTextInRectangle(g, color = Color.BLUE, text = "w", rectangle = rect, xOffset = -30, yOffset = 85)
         }
     }
 

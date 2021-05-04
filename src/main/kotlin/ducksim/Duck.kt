@@ -2,8 +2,10 @@ package ducksim
 
 import java.awt.Color
 
-abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings(),
-    private val defaultQuackBehavior: QuackBehavior = QuackNormal(null)) {
+abstract class Duck(
+    private val defaultFlyBehavior: FlyBehavior = FlyWithWings(),
+    private val defaultQuackBehavior: QuackBehavior = QuackNormal(null)
+) : Observer {
 
     // values that can be overridden
 
@@ -21,7 +23,9 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
     var flyBehavior: FlyBehavior = defaultFlyBehavior
         private set
     var quackBehavior: QuackBehavior = defaultQuackBehavior
+
     // function for setting the state back to its default (swimming)
+    var welcomeText = "Welcome"
 
     fun swim() {
         state = State.SWIMMING
@@ -37,15 +41,22 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
         state = if (isFree) State.QUACKING else State.SWIMMING
     }
 
+    fun welcome() {
+        state = State.WELCOMING
+        welcomeText = if (isFree) "Welcome" else "Beware!"
+    }
+
     val joinDSCW = object : DuckMenuItem {
         override fun invoke() {
             isOnDSWC = true
+            DuckFactory.registerObserver(this@Duck)
         }
     }
 
     val quitDSCW = object : DuckMenuItem {
         override fun invoke() {
             isOnDSWC = false
+            DuckFactory.removeObserver(this@Duck)
         }
     }
 
@@ -70,4 +81,8 @@ abstract class Duck(private val defaultFlyBehavior: FlyBehavior = FlyWithWings()
     // abstract display function that must be implemented by concrete classes
 
     abstract fun display(): String
+
+    override fun update() {
+        welcome()
+    }
 }
